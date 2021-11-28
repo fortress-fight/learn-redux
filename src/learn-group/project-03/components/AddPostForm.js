@@ -2,14 +2,13 @@
  * @Description: 添加帖子的表单
  * @Author: F-Stone
  * @Date: 2021-11-24 13:54:46
- * @LastEditTime: 2021-11-24 14:54:06
+ * @LastEditTime: 2021-11-29 00:19:23
  * @LastEditors: F-Stone
  */
 import React, { useState } from 'react'
-import { nanoid } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 
-import {postAdded} from "./postSlice";
+import {postAdded} from "../features/posts/postSlice";
 
 export const AddPostForm = () => {
     const [title, setTitle] = useState("");
@@ -22,14 +21,7 @@ export const AddPostForm = () => {
 
     const onSavePostClicked = () => {
         if (title && content) {
-            dispatch(
-                postAdded({
-                    id: nanoid(),
-                    title,
-                    content
-                })
-            )
-
+            dispatch(postAdded(title, content));
             setTitle("");
             setContent("");
         }

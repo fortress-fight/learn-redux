@@ -2,22 +2,25 @@
  * @Description: Project-02 Root 组件
  * @Author: F-Stone
  * @Date: 2021-11-24 13:21:09
- * @LastEditTime: 2021-11-24 20:13:21
+ * @LastEditTime: 2021-11-29 00:24:05
  * @LastEditors: F-Stone
  */
 import React from "react";
 import { Provider } from "react-redux";
-import { BrowserRouter, Routes, Route, HashRouter } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 
-import { PostsList } from "./features/posts/PostsList";
-import { AddPostForm } from "./features/posts/AddPostForm";
+import { PostsList } from "./components/PostsList";
+import { AddPostForm } from "./components/AddPostForm";
 import { store } from "./app/store";
 import { SinglePostPage } from "./components/SinglePostPage";
+import {Navbar} from "./components/Navbar";
+import {EditPostForm} from "./components/EditPostForm"
 
 export default function App() {
     return (
         <Provider store={store}>
             <HashRouter>
+                <Navbar /> 
                 <div className="App">
                     <Routes>
                         <Route
@@ -33,6 +36,11 @@ export default function App() {
                         <Route
                             path="/posts/:postId"
                             element={<SinglePostPage />}
+                        />
+                        <Route
+                            exact
+                            path="/editPost/:postId"
+                            element={<EditPostForm />}
                         />
                         <Route
                             path="*"
