@@ -2,7 +2,7 @@
  * @Description: Slice - Post List
  * @Author: F-Stone
  * @Date: 2021-11-24 11:54:45
- * @LastEditTime: 2021-11-30 17:16:30
+ * @LastEditTime: 2021-12-08 17:37:40
  * @LastEditors: F-Stone
  */
 import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
@@ -42,13 +42,19 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
 
 export const addNewPost = createAsyncThunk("posts/addNewPost", async initialPost => {
     const response = await new Promise((resolve, reject) => {
-        resolve({
-            post: {
-                date: new Date().toISOString(),
-                id: nanoid(),
-                ...initialPost
-            } 
-        })
+       setTimeout(() => {
+           if (Math.random() > 0.5) {
+               reject("模拟错误")
+           } else {
+               resolve({
+                   post: {
+                       date: new Date().toISOString(),
+                       id: nanoid(),
+                       ...initialPost
+                   } 
+               })
+           }
+       }, 1000);
     })
     return response.post;
 })
