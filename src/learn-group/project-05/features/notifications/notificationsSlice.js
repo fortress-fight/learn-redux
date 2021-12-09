@@ -2,7 +2,7 @@
  * @Description: 通知 store
  * @Author: F-Stone
  * @Date: 2021-12-08 19:00:19
- * @LastEditTime: 2021-12-09 00:51:42
+ * @LastEditTime: 2021-12-09 13:11:20
  * @LastEditors: F-Stone
  */
 import { createSlice, createAsyncThunk, nanoid } from "@reduxjs/toolkit";
@@ -47,15 +47,25 @@ export const fetchNotifications = createAsyncThunk("notifications/fetchNotificat
 const notificationsSlice = createSlice({
     name: "notifications",
     initialState: [],
-    reducers: {},
+    reducers: {
+        allNotificationsRead(state, action) {
+            state.forEach((notifications) => {
+                notifications.read = true;
+            });
+        },
+    },
     extraReducers: {
         [fetchNotifications.fulfilled]: (state, action) => {
+            state.forEach((notification) => {
+                notification.isNew = !notification.red;
+            });
             state.push(...action.payload);
             state.sort((a, b) => b.date.localeCompare(a.date));
         },
     },
 });
 
+export const { allNotificationsRead } = notificationsSlice.actions;
 export default notificationsSlice.reducer;
 
 export const selectAllNotifications = (state) => state.notifications;

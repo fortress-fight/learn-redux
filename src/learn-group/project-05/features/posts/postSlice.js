@@ -2,10 +2,15 @@
  * @Description: Slice - Post List
  * @Author: F-Stone
  * @Date: 2021-11-24 11:54:45
- * @LastEditTime: 2021-12-08 18:52:08
+ * @LastEditTime: Thu Dec 09 2021 15:16:24
  * @LastEditors: F-Stone
  */
-import { createAsyncThunk, createSlice, nanoid } from "@reduxjs/toolkit";
+import {
+    createAsyncThunk,
+    createSlice,
+    nanoid,
+    createSelector,
+} from "@reduxjs/toolkit";
 import { sub } from "date-fns";
 
 const initialState = {
@@ -40,24 +45,27 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
     return response.posts;
 });
 
-export const addNewPost = createAsyncThunk("posts/addNewPost", async (initialPost) => {
-    const response = await new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (Math.random() > 0.5) {
-                reject("模拟错误");
-            } else {
-                resolve({
-                    post: {
-                        date: new Date().toISOString(),
-                        id: nanoid(),
-                        ...initialPost,
-                    },
-                });
-            }
-        }, 1000);
-    });
-    return response.post;
-});
+export const addNewPost = createAsyncThunk(
+    "posts/addNewPost",
+    async (initialPost) => {
+        const response = await new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (Math.random() > 0.5) {
+                    reject("模拟错误");
+                } else {
+                    resolve({
+                        post: {
+                            date: new Date().toISOString(),
+                            id: nanoid(),
+                            ...initialPost,
+                        },
+                    });
+                }
+            }, 1000);
+        });
+        return response.post;
+    }
+);
 
 const postSlice = createSlice({
     name: "posts",
@@ -97,7 +105,9 @@ const postSlice = createSlice({
         },
         postUpdate(state, action) {
             let { id, title, content } = action.payload;
-            let existingPost = state.posts.find(({ id: postId }) => postId === id);
+            let existingPost = state.posts.find(
+                ({ id: postId }) => postId === id
+            );
             if (existingPost) {
                 existingPost.title = title;
                 existingPost.content = content;
@@ -126,4 +136,9 @@ export const { postAdded, postUpdate, reactionAdded } = postSlice.actions;
 export default postSlice.reducer;
 
 export const selectAllPosts = (state) => state.posts.posts;
-export const selectPostById = (state, postId) => state.posts.posts.find((post) => post.id === postId);
+export const selectPostById = (state, postId) =>
+    state.posts.posts.find((post) => post.id === postId);
+export const selectPostsByUser = createSelector(
+    [selectAllPosts, (state, userId) => userId],
+    (posts, userId) => posts.filter((post) => post.user === userId)
+);

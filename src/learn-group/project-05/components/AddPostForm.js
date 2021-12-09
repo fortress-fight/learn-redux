@@ -2,7 +2,7 @@
  * @Description: 添加帖子的表单
  * @Author: F-Stone
  * @Date: 2021-11-24 13:54:46
- * @LastEditTime: 2021-12-08 17:36:57
+ * @LastEditTime: Thu Dec 09 2021 14:20:28
  * @LastEditors: F-Stone
  */
 import React, { useState } from "react";
@@ -56,6 +56,14 @@ export const AddPostForm = () => {
         <section>
             <h2>添加新帖子</h2>
             <form>
+                <label htmlFor="postTitle">帖子标题:</label>
+                <input
+                    type="text"
+                    id="postTitle"
+                    name="postTitle"
+                    value={title}
+                    onChange={onTitleChanged}
+                />
                 <label htmlFor="postAuthor">作者:</label>
                 <select
                     name="postAuthor"
@@ -67,14 +75,6 @@ export const AddPostForm = () => {
                     {usersOptions}
                 </select>
                 <label htmlFor="postContent">内容:</label>
-                <label htmlFor="postTitle">帖子标题:</label>
-                <input
-                    type="text"
-                    id="postTitle"
-                    name="postTitle"
-                    value={title}
-                    onChange={onTitleChanged}
-                />
                 <textarea
                     name="postContent"
                     id="postContent"
